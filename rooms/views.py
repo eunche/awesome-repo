@@ -7,6 +7,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import permissions
 from .models import Room
 from .serializers import RoomSerializer
+from .permissions import IsOwner
 
 
 class RoomViewSet(ModelViewSet):
@@ -18,8 +19,9 @@ class RoomViewSet(ModelViewSet):
             permission_classes = [permissions.AllowAny]
         elif self.action == "create":
             permission_classes = [permissions.IsAuthenticated]
-        # else:
-        ###### permission_classes = [IsOwner]
+        else:
+            permission_classes = [IsOwner]
+        return [permission() for permission in permission_classes]
 
 
 @api_view(["GET"])
