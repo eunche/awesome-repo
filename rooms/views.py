@@ -17,7 +17,7 @@ class RoomsView(APIView):
         rooms = Room.objects.all()
         # request를 주는 이유는 ?page=2 이런걸 찾아내게 하려고
         results = paginator.paginate_queryset(rooms, request)
-        serializer = RoomSerializer(rooms, many=True)
+        serializer = RoomSerializer(results, many=True, context={"request": request})
         return paginator.get_paginated_response(serializer.data)
 
     def post(self, request):
